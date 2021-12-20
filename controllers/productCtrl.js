@@ -1,6 +1,6 @@
 const Products = require('../models/productModel')
 
-// Filter, sorting and paginating
+// Filter, sorting and creating pages
 
 class APIfeatures {
     constructor(query, queryString) {

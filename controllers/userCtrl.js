@@ -13,23 +13,22 @@ const userCtrl = {
             if (password.length < 6)
                 return res.status(400).json({ msg: "Password is at least 6 characters long." })
 
-            // Password Encryption
+            // Password Encryption for security
             const passwordHash = await bcrypt.hash(password, 10)
             const newUser = new Users({
                 name, email, password: passwordHash
             })
 
-            // Save mongodb
+            // Save data to mongodb
             await newUser.save()
 
-            // Then create jsonwebtoken to authentication
+            // Then create jsonwebtoken for authentication
             const accesstoken = createAccessToken({ id: newUser._id })
             const refreshtoken = createRefreshToken({ id: newUser._id })
 
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
                 path: '/user/refresh_token',
-                // maxAge: 7 * 24 * 60 * 60 * 1000 // 7d
             })
 
             res.json({ accesstoken })
